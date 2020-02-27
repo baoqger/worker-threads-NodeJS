@@ -40,16 +40,17 @@ const calculatePrimes = number => {
             // Create a promise for each worker
             return new Promise((resolve, reject) => {
                 // creating a worker with the some inital workerData
-                const worker = new Worker(workerPath, {
-                    workerData: {
-                        start: segment[0],
-                        size: segment[1],
-                        curr: 2,
-                        limit: limit,
-                        sieve: area.slice(0,segment[1])
-                    }
-                });
+                const worker = new Worker(workerPath);
+                const segmentSieve = sieve.slice(0,segment[1])
 
+                worker.postMessage({
+                    start: segment[0],
+                    size: segment[1],
+                    curr: 2,
+                    limit: limit,
+                    sieve: segmentSieve
+                })
+                // console.log("debug", segmentSieve.length, "\n")
                 // When worker emits, message | error | exit events
                 worker.on("message", resolve);
                 worker.on("error", reject);

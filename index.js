@@ -2,7 +2,8 @@ const inquirer = require("inquirer");
 const ora = require("ora");
 
 const array = require("./array");
-const arrayBuffer = require("./arrayBuffer");
+const arrayBuffer = require("./arrayBuffer-copy");
+const arrayBufferTransfer = require("./arrayBuffer-transfer");
 const sharedArrayBuffer = require("./sharedArrayBuffer");
 const normalSieve = require("./normalSieve");
 
@@ -34,13 +35,9 @@ const run = async () => {
         }
     ]);
 
-    // Written using then
-    // calculatePrimes(primeRange).then((res) => {
-    //     spinner.succeed(`Number of primes : ${res[0]}`)
-    // });
-
     const workerArrayTime = await calcTime(primeRange,array,"worker array");
-    const workerArrayBufferTime = await calcTime(primeRange,arrayBuffer,"worker arrayBuffer");
+    const workerArrayBufferTime = await calcTime(primeRange,arrayBuffer,"worker arrayBuffer copy");
+    const workerArrayBufferTimeTransfer = await calcTime(primeRange,arrayBufferTransfer,"worker arrayBuffer transfer");
     const workerSharedArrayBufferTime = await calcTime(primeRange,sharedArrayBuffer,"worker sharedArrayBuffer");
     const localTime = await calcTime(primeRange,normalSieve,"main");
     console.log(`⏱️ Time difference between main thread and worker (sharedArrayBuffer) : ${(localTime-workerSharedArrayBufferTime)/NS_PER_SEC} seconds`);

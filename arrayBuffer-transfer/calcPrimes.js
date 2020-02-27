@@ -1,5 +1,6 @@
 const { Worker, parentPort, workerData } = require("worker_threads");
 
+// Get init data from mainThread
 parentPort.on("message", (res) => {
     // Get init data from mainThread
     const size = res.size;
@@ -9,7 +10,6 @@ parentPort.on("message", (res) => {
     const sieve = res.sieve;
     run(size, start, limit, curr, sieve)
 })
-
 
 function run(size, start, limit, curr, sieve) {
     // While the current factor is less than eq limit
@@ -43,6 +43,5 @@ function run(size, start, limit, curr, sieve) {
     parentPort.postMessage(sieve);
     parentPort.close();
 }
-
 
 
